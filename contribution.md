@@ -45,4 +45,5 @@ Thanks to all the amazing people who have contributed to **AlumX's Backend Repos
 - Harshit Sethi (@HarshitRSethi)
 - Himansh Arora (@Humanshere)
 - Ashutosh kesarwani(@Lucifer-0612)
+- Siddhant Shekhar (@sshekhar563)
 -Lavay Garg(@lavaygarg)
