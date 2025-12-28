@@ -1,10 +1,10 @@
 package com.opencode.alumxbackend.users.model;
 
-<<<<<<< HEAD
+
 import com.opencode.alumxbackend.jobposts.model.JobPostComment;
-=======
+
 import com.opencode.alumxbackend.resume.model.Resume;
->>>>>>> 0d21682 (improved the resume model)
+
 import jakarta.persistence.*;
 import lombok.*;
 
