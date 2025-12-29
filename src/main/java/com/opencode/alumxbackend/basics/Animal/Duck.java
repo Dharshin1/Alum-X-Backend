@@ -1,4 +1,4 @@
-package com.opencode.alumxbackend.Animal;
+package com.opencode.alumxbackend.basics.Animal;
 
 public class Duck {
     public String makeSound() {

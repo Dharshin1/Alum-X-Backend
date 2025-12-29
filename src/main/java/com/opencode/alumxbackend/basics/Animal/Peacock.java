@@ -1,13 +1,13 @@
-package com.opencode.alumxbackend.Animal;
+package com.opencode.alumxbackend.basics.Animal;
 
-public class Penguin {
-
+public class Peacock {
+    
     public String makeSound() {
-        return "Honk!";
+        return "Squawk!";
     }
 
     public String habitat() {
-        return "Antarctica";
+        return "Forest";
     }
 
     public int numberOfLegs() {
