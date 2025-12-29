@@ -4,6 +4,7 @@ import com.opencode.alumxbackend.groupchat.dto.GroupChatRequest;
 import com.opencode.alumxbackend.groupchat.model.GroupChat;
 import com.opencode.alumxbackend.groupchat.model.Participant;
 import com.opencode.alumxbackend.groupchat.repository.GroupChatRepository;
+import com.opencode.alumxbackend.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class GroupChatService {
 
     private final GroupChatRepository repository;
+    private final UserRepository userRepository;
 
     public GroupChat createGroup(GroupChatRequest request) {
         GroupChat group = GroupChat.builder()
@@ -25,6 +27,11 @@ public class GroupChatService {
         // Map DTO participants -> Participant entity
         List<Participant> participants = request.getParticipants().stream()
                 .map(p -> {
+
+                    var existingParticipant = userRepository.findById(p.getUserId())
+                            .orElseThrow(()-> new RuntimeException(
+                                    "User with ID " + p.getUserId() + "does not exits "
+                            ));
                     Participant participant = new Participant();
                     participant.setUserId(p.getUserId());
                     participant.setUsername(p.getUsername());
