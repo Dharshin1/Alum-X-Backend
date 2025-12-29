@@ -1,6 +1,7 @@
 package com.opencode.alumxbackend.groupchatmessages.service;
 
 import com.opencode.alumxbackend.groupchat.model.GroupChat;
+import com.opencode.alumxbackend.groupchat.model.Participant;
 import com.opencode.alumxbackend.groupchatmessages.dto.GroupMessageResponse;
 import com.opencode.alumxbackend.groupchatmessages.dto.SendGroupMessageRequest;
 import com.opencode.alumxbackend.groupchatmessages.exception.GroupNotFoundException;
@@ -9,11 +10,11 @@ import com.opencode.alumxbackend.groupchatmessages.exception.UserNotMemberExcept
 import com.opencode.alumxbackend.groupchatmessages.model.GroupMessage;
 import com.opencode.alumxbackend.groupchatmessages.repository.GroupMessageRepository;
 import com.opencode.alumxbackend.groupchat.repository.GroupChatRepository;
-import com.opencode.alumxbackend.groupchat.model.GroupChat.Participant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,16 +26,17 @@ public class GroupMessageServiceImpl implements GroupMessageService {
 
     @Override
     public GroupMessageResponse sendMessage(
-            String groupId,
+            Long groupId,
             SendGroupMessageRequest request
     ) {
 
         GroupChat group = groupChatRepository.findById(groupId)
-                .orElseThrow(() -> new GroupNotFoundException(groupId));
+                .orElseThrow(() -> new GroupNotFoundException("Group id not found " + groupId));
 
-        boolean isMember = group.getParticipants()
+        group.getParticipants()
                 .stream()
-                .anyMatch(p -> p.getUserId().equals(request.getUserId()));
+                .anyMatch(p -> false);
+        boolean isMember = false;
 
         if (!isMember) {
             throw new UserNotMemberException(request.getUserId());
@@ -53,7 +55,7 @@ public class GroupMessageServiceImpl implements GroupMessageService {
                 .senderUserId(sender.getUserId())
                 .senderUsername(sender.getUsername())
                 .content(request.getContent())
-                .createdAt(Instant.now())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         messageRepository.save(message);
@@ -63,8 +65,8 @@ public class GroupMessageServiceImpl implements GroupMessageService {
 
     @Override
     public List<GroupMessageResponse> fetchMessages(
-            String groupId,
-            String userId
+            Long groupId,
+            Long userId
     ) {
 
         GroupChat group = groupChatRepository.findById(groupId)

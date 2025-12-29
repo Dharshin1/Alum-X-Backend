@@ -20,7 +20,7 @@ public class GroupMessageController {
 
     @PostMapping(value="/{groupId}/messages",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> sendMessage(
-            @PathVariable String groupId,
+            @PathVariable Long groupId,
             @RequestBody @Valid SendGroupMessageRequest request
     ) {
         return ResponseEntity.ok(service.sendMessage(groupId, request));
@@ -28,8 +28,8 @@ public class GroupMessageController {
 
     @GetMapping("/{groupId}/messages")
     public List<GroupMessageResponse> getMessages(
-            @PathVariable String groupId,
-            @RequestParam String userId
+            @PathVariable Long groupId,
+            @RequestParam Long userId
     ) {
         return service.fetchMessages(groupId, userId);
     }

@@ -1,8 +1,8 @@
 package com.opencode.alumxbackend.groupchat.dto;
 
-import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 import java.util.List;
 
 @Data
@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupChatRequest {
+
     @NotBlank(message = "Group name is required")
     private String name;
 
@@ -20,7 +21,7 @@ public class GroupChatRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ParticipantRequest {
-        private String userId;
+        private Long userId;
         private String username;
     }
 }

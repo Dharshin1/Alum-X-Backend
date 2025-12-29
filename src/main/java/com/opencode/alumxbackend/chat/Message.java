@@ -35,10 +35,19 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT")
-    private Long id;
+    private Long messageID;
+
+
+
+
+    // we cant store the Entire object in the row this is the instace wer we
+    // join the table
+    //here it is going to match the primary key of the Chat table
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
+
+
     @Column(nullable = false)
     private String senderUsername;
     // make sure this username used here always exists in the DB before processing the query

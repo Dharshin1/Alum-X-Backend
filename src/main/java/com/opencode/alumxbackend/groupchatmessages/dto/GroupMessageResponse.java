@@ -1,16 +1,21 @@
 package com.opencode.alumxbackend.groupchatmessages.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GroupMessageResponse {
-    private UUID id;
-    private String senderUserId;
+    private Long id;
+    private Long senderUserId;
     private String senderUsername;
     private String content;
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 }

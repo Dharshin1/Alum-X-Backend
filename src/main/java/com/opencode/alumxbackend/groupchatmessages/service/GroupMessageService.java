@@ -6,13 +6,14 @@ import com.opencode.alumxbackend.groupchatmessages.dto.SendGroupMessageRequest;
 import java.util.List;
 
 public interface GroupMessageService {
+
     GroupMessageResponse sendMessage(
-            String groupId,
+            Long groupId,
             SendGroupMessageRequest request
     );
 
     List<GroupMessageResponse> fetchMessages(
-            String groupId,
-            String userId
+            Long groupId,
+            Long userId
     );
 }

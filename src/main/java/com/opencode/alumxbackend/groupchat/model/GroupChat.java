@@ -1,41 +1,39 @@
 package com.opencode.alumxbackend.groupchat.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.util.List;
+import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "group_chats")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GroupChat {
+
     @Id
-    private String groupId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "group_id", nullable = false, updatable = false)
+    private Long groupId;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "group_name", nullable = false)
+    private String groupName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "group_chat_participants",
-            joinColumns = @JoinColumn(name = "group_id")
-    )
-    private List<Participant> participants;
+    @OneToMany(mappedBy = "groupChat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Participant> participants = new ArrayList<>();
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Embeddable
-    public static class Participant {
-        private String userId;
-        private String username;
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.opencode.alumxbackend.groupchatmessages.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -16,13 +17,13 @@ public class GroupMessage {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
 
     @Column(nullable = false)
-    private String groupId;
+    private Long groupId;
 
     @Column(nullable = false)
-    private String senderUserId;
+    private Long senderUserId;
 
     @Column(nullable = false)
     private String senderUsername;
@@ -31,5 +32,5 @@ public class GroupMessage {
     private String content;
 
     @Column(nullable = false)
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 }

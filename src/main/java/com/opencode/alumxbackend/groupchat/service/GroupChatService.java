@@ -2,41 +2,43 @@ package com.opencode.alumxbackend.groupchat.service;
 
 import com.opencode.alumxbackend.groupchat.dto.GroupChatRequest;
 import com.opencode.alumxbackend.groupchat.model.GroupChat;
-import com.opencode.alumxbackend.groupchat.model.GroupChat.Participant;
+import com.opencode.alumxbackend.groupchat.model.Participant;
 import com.opencode.alumxbackend.groupchat.repository.GroupChatRepository;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class GroupChatService {
+
     private final GroupChatRepository repository;
 
-    public GroupChat createGroup(GroupChatRequest request){
-        // Remove duplicate participants
-        List<Participant> participants = request.getParticipants().stream()
-                .distinct()
-                .map(p -> new GroupChat.Participant(p.getUserId(), p.getUsername()))
-                .collect(Collectors.toList());
-
-        String groupId = UUID.randomUUID().toString();
-
+    public GroupChat createGroup(GroupChatRequest request) {
         GroupChat group = GroupChat.builder()
-                .groupId(groupId)
-                .name(request.getName())
-                .participants(participants)
+                .groupName(request.getName())
                 .createdAt(LocalDateTime.now())
                 .build();
 
+        // Map DTO participants -> Participant entity
+        List<Participant> participants = request.getParticipants().stream()
+                .map(p -> {
+                    Participant participant = new Participant();
+                    participant.setUserId(p.getUserId());
+                    participant.setUsername(p.getUsername());
+                    participant.setGroupChat(group);
+                    return participant;
+                }).collect(Collectors.toList());
+
+        group.setParticipants(participants);
+
+        // Save group along with participants (cascade)
         return repository.save(group);
     }
 
-    public GroupChat getGroupById(String groupId) {
+    public GroupChat getGroupById(Long groupId) {
         return repository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
     }
